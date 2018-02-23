@@ -46,13 +46,17 @@ def get_latest():
     url = _base_url + last_50_url
     print(url)
     r = get_url(url)
+    anime_list = []
     if r:
         sp = bs(r, 'html.parser')
         animes = sp.find("div", class_="menulaststyle")
         # print(animes)
         urls = animes.find_all('a')
-        print urls[0]["href"]
-        print(urls[0].text.strip())
+        for url in urls:
+            # print urls[0]["href"]
+            # print(urls[0].text.strip())
+            anime_list.append({"src": url["href"], "title": url.text.strip()})
+        return anime_list
 
 
 def get_dub():
@@ -64,9 +68,12 @@ def get_dub():
         animes = sp.find("div", id="ddmcc_container")
         # print(animes)
         urls = animes.find_all('a')
+        anime_list = []
         for url in urls:
             if url.has_attr("href"):
-                print url["href"], url.text
+                # print url["href"], url.text
+                anime_list.append({"src": url["href"], "title": url.text.strip()})
+        return anime_list
 
 
 def get_sub():
@@ -183,9 +190,12 @@ def get_episodes(url):
         sp = bs(r, 'html.parser')
         episodes = sp.find("div", id="catlist-listview")
         urls = episodes.find_all("a")
+        episodes_list = []
         for url in urls:
             if url.has_attr("href"):
-                print url["href"], url.text
+                # print url["href"], url.text
+                episodes_list.append({"src": url["href"], "title": url.text})
+        return episodes_list
 
 
 def get_episode(url):
@@ -209,17 +219,17 @@ def get_episode(url):
                 # print(value)
                 doc = ""
                 for d in encoded_data:
-                    doc += chr(int(re.sub("\D","",base64.b64decode(d))) - value)
+                    doc += chr(int(re.sub("\D", "", base64.b64decode(d))) - value)
                 # print(doc)
                 video_sources = _base_url + doc.split(" ")[2][5:-1]
                 # print video_sources
                 r = get_url(video_sources)
                 if r:
-                #     sp = bs(r, 'html.parser')
-                #     script_blocks = sp.find_all("script")
-                #     for script in script_blocks:
-                #         if "file" in script.text:
-                #             print(script)
+                    #     sp = bs(r, 'html.parser')
+                    #     script_blocks = sp.find_all("script")
+                    #     for script in script_blocks:
+                    #         if "file" in script.text:
+                    #             print(script)
                     sources = url = re.findall(r'file:.*?"(.*?)"', r)
                     # print(sources)
                     # break
@@ -227,10 +237,9 @@ def get_episode(url):
     return None
 
 
-
 if __name__ == "__main__":
-    # get_latest()
-    # get_dub()
+    # print get_latest()
+    print get_dub()
     # get_sub()
     # get_cartoon()
     # get_movie()
@@ -239,6 +248,6 @@ if __name__ == "__main__":
     # get_todays()
     # search_anime("naruto")
     # get_genres()
-    # get_episodes("https://www.watchcartoononline.io/anime/6teen")
+    # print get_episodes("https://www.watchcartoononline.io/anime/6teen")
     # print(get_episode("https://www.watchcartoononline.io/6teen-season-4-episode-13-bye-bye-nikki-part-2"))
     pass

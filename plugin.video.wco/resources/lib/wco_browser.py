@@ -1,6 +1,8 @@
 import requests
 from bs4 import BeautifulSoup as bs
 from xbmcswift2 import plugin
+import re
+import base64
 
 _base_url = "https://www.watchcartoononline.io"
 last_50_url = "/last-50-recent-release"
@@ -186,6 +188,46 @@ def get_episodes(url):
                 print url["href"], url.text
 
 
+def get_episode(url):
+    r = get_url(url)
+    if r:
+        sp = bs(r, 'html.parser')
+        script_blocks = sp.find_all("script")
+        for i, script in enumerate(script_blocks):
+            if "decodeURIComponent" in script.text:
+                # print i, script
+                s = script.text
+                start = s.find("[") + 1
+                end = s.find("]")
+                # print(start)
+                # print(end)
+                encoded_data = s[start:end]
+                encoded_data = encoded_data.replace('"', "").split(",")
+                # Remove all non-digit characters
+                value = int(re.sub("\D", "", s[end:]))
+                # print(encoded_data)
+                # print(value)
+                doc = ""
+                for d in encoded_data:
+                    doc += chr(int(re.sub("\D","",base64.b64decode(d))) - value)
+                # print(doc)
+                video_sources = _base_url + doc.split(" ")[2][5:-1]
+                # print video_sources
+                r = get_url(video_sources)
+                if r:
+                #     sp = bs(r, 'html.parser')
+                #     script_blocks = sp.find_all("script")
+                #     for script in script_blocks:
+                #         if "file" in script.text:
+                #             print(script)
+                    sources = url = re.findall(r'file:.*?"(.*?)"', r)
+                    # print(sources)
+                    # break
+                    return sources[0]
+    return None
+
+
+
 if __name__ == "__main__":
     # get_latest()
     # get_dub()
@@ -197,5 +239,6 @@ if __name__ == "__main__":
     # get_todays()
     # search_anime("naruto")
     # get_genres()
-    get_episodes("https://www.watchcartoononline.io/anime/6teen")
+    # get_episodes("https://www.watchcartoononline.io/anime/6teen")
+    # print(get_episode("https://www.watchcartoononline.io/6teen-season-4-episode-13-bye-bye-nikki-part-2"))
     pass

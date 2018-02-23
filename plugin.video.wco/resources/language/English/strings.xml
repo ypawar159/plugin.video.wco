@@ -2,4 +2,14 @@
 <strings>
   <!-- Plugin name -->
   <string id="30000">WCO</string>
+  <string id="30001">Dubbed Anime</string>
+  <string id="30002">Subbed Anime</string>
+  <string id="30003">Last 50 Recent Release</string>
+  <string id="30004">Cartoons</string>
+  <string id="30005">Movies</string>
+  <string id="30006">OVA Series</string>
+  <string id="30007">Popular &amp; Ongoing Series</string>
+  <string id="30008">Today's Anime List</string>
+  <string id="30009">Search</string>
+  <string id="30010">Genres</string>
 </strings>

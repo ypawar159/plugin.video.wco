@@ -99,7 +99,7 @@ def todays():
     animes = wco.get_todays()
     items = []
     for anime in animes:
-        items.append({"label": anime["title"], "path": plugin.url_for("episodes", anime_url=anime["src"])})
+        items.append({"label": anime["title"], "path": plugin.url_for("episode", episode_url=anime["src"])})
     return items
     pass
 

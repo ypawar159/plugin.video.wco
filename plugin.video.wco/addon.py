@@ -1,9 +1,12 @@
 from xbmcswift2 import Plugin
 from resources.lib import wco_browser as wco
+from xbmcswift2 import xbmc
 
 plugin = Plugin()
 
 
+# ToDo: Add Download functionality for invididual episode first, then selectable like all, first <numbers>,
+# last <numbers>
 @plugin.route('/')
 def index():
     menu = [
@@ -136,16 +139,17 @@ def episodes(anime_url):
     episode_list = wco.get_episodes(anime_url)
     items = []
     for epsd in episode_list:
-        items.append({"label": epsd["title"], "path": plugin.url_for("episode", episode_url=epsd["src"])})
+        items.append(
+            {"label": epsd["title"], "path": plugin.url_for("episode", episode_url=epsd["src"]), "is_playable": True})
     return items
 
 
 @plugin.route("/episode/<episode_url>")
 def episode(episode_url):
     video_link = wco.get_episode(episode_url)
+    plugin.log.info(video_link)
     if video_link:
-        plugin.log.info(video_link)
-        plugin.set_resolved_url(video_link)
+        xbmc.Player().play(video_link)
     pass
 
 

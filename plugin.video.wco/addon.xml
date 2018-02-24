@@ -12,7 +12,7 @@
     <extension point="xbmc.addon.metadata">
         <platform>all</platform>
         <language></language>
-        <summary>Summary for "WCO"</summary>
-        <description>Description for "WCO"</description>
+        <summary>WCO Video Plugin for www.watchcartoononline.io</summary>
+        <description>WCO Video Plugin for www.watchcartoononline.io</description>
     </extension>
 </addon>

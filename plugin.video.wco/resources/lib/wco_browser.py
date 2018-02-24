@@ -85,9 +85,12 @@ def get_sub():
         animes = sp.find("div", id="ddmcc_container")
         # print(animes)
         urls = animes.find_all('a')
+        anime_list = []
         for url in urls:
             if url.has_attr("href"):
-                print url["href"], url.text
+                # print url["href"], url.text
+                anime_list.append({"src": url["href"], "title": url.text.strip()})
+        return anime_list
 
 
 def get_cartoon():
@@ -99,9 +102,12 @@ def get_cartoon():
         animes = sp.find("div", id="ddmcc_container")
         # print(animes)
         urls = animes.find_all('a')
+        anime_list = []
         for url in urls:
             if url.has_attr("href"):
-                print url["href"], url.text
+                # print url["href"], url.text
+                anime_list.append({"src": url["href"], "title": url.text.strip()})
+        return anime_list
 
 
 def get_movie():
@@ -113,9 +119,12 @@ def get_movie():
         animes = sp.find("div", id="ddmcc_container")
         # print(animes)
         urls = animes.find_all('a')
+        anime_list = []
         for url in urls:
             if url.has_attr("href"):
-                print url["href"], url.text
+                # print url["href"], url.text
+                anime_list.append({"src": url["href"], "title": url.text.strip()})
+        return anime_list
 
 
 def get_ova():
@@ -127,9 +136,12 @@ def get_ova():
         animes = sp.find("div", id="ddmcc_container")
         # print(animes)
         urls = animes.find_all('a')
+        anime_list = []
         for url in urls:
             if url.has_attr("href"):
-                print url["href"], url.text
+                # print url["href"], url.text
+                anime_list.append({"src": url["href"], "title": url.text.strip()})
+        return anime_list
 
 
 def get_popular():
@@ -140,9 +152,12 @@ def get_popular():
         sp = bs(r, 'html.parser')
         animes = sp.find_all("div", class_="menustyle")[1]
         urls = animes.find_all('a')
+        anime_list = []
         for url in urls:
             if url.has_attr("href"):
-                print url["href"], url.text
+                # print url["href"], url.text
+                anime_list.append({"src": url["href"], "title": url.text.strip()})
+        return anime_list
 
 
 def get_todays():
@@ -153,9 +168,12 @@ def get_todays():
         sp = bs(r, 'html.parser')
         animes = sp.find_all("div", class_="menustyle")[0]
         urls = animes.find_all('a')
+        anime_list = []
         for url in urls:
             if url.has_attr("href"):
-                print url["href"], url.text
+                # print url["href"], url.text
+                anime_list.append({"src": url["href"], "title": url.text.strip()})
+        return anime_list
 
 
 def search_anime(query):
@@ -166,12 +184,19 @@ def search_anime(query):
     if r:
         sp = bs(r, 'html.parser')
         animes = sp.find_all("div", class_="iccerceve")
+        anime_list = []
         for anime in animes:
-            print(anime.find_all("a")[-1])
+            # print(anime.find_all("a")[-1])
+            url = anime.find_all("a")[-1]
+            anime_list.append({"src": url["href"], "title": url["title"]})
+        return anime_list
 
 
-def get_genres():
-    url = _base_url + _search_genre_url
+def get_genres(gid=None):
+    if gid:
+        url = _base_url + _search_genre_url + "/" + gid
+    else:
+        url = _base_url + _search_genre_url
     print(url)
     r = get_url(url)
     if r:
@@ -179,10 +204,15 @@ def get_genres():
         animes = sp.find("div", id="ddmcc_container")
         # print(animes)
         urls = animes.find_all('a')
+        anime_list = []
         for url in urls:
             if url.has_attr("href"):
-                print url["href"], url.text
+                # print url["href"], url.text
+                anime_list.append({"src": url["href"], "title": url.text.strip()})
+        return anime_list
 
+
+# def search_by_genre(gid):
 
 def get_episodes(url):
     r = get_url(url)
@@ -239,15 +269,16 @@ def get_episode(url):
 
 if __name__ == "__main__":
     # print get_latest()
-    print get_dub()
-    # get_sub()
-    # get_cartoon()
-    # get_movie()
-    # get_ova()
-    # get_popular()
-    # get_todays()
-    # search_anime("naruto")
-    # get_genres()
+    # print get_dub()
+    # print get_sub()
+    # print get_cartoon()
+    # print get_movie()
+    # print get_ova()
+    # print get_popular()
+    # print get_todays()
+    # print search_anime("naruto")
+    print get_genres()
+    # print get_genres('69')
     # print get_episodes("https://www.watchcartoononline.io/anime/6teen")
     # print(get_episode("https://www.watchcartoononline.io/6teen-season-4-episode-13-bye-bye-nikki-part-2"))
     pass

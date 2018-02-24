@@ -1,4 +1,4 @@
-# plugin.video.wco Watch CartoonOnline plugin for Kodi
+# plugin.video.wco WatchCartoonOnline plugin for Kodi
 Kodi plugin for http://watchcartoononline.io/
 
 **Tested on Kodi Krypton 17.0+**
